@@ -1,0 +1,147 @@
+body {
+	font-family: Verdana, sans-serif;
+	font-size: 14px;
+}
+
+#banner > a:hover {
+	background-color: #012949;
+	outline: none;
+	box-shadow: none;
+}
+
+md-card.default-card {
+	background-color: #fff;
+	border: 1px solid #ccc;
+}
+
+prm-logo div.product-logo {
+	display: none;
+}
+
+prm-logo div.product-logo-local {
+	display: flex;
+}
+
+md-list-item {
+	/*background-color: #fff !important;*/
+	border-left: 3px solid #fff !important;
+}
+md-list-item:hover {
+	border-left: 3px solid #FFC533 !important; /* IC gold */
+}
+
+prm-brief-result-container {
+	background-color: #fff !important;
+}
+
+#full-view-container {
+	outline: none !important;
+}
+.ic-links-area {
+	color: #666;
+}
+.ic-trace-link, .ic-sms-link, .ic-notify-link {
+	color: #666;
+	/*font-weight: bold;*/
+}
+.ic-notify-link:hover, .ic-notify-link:active, .ic-notify-link:focus,
+.ic-trace-link:hover, .ic-trace-link:active, .ic-trace-link:focus,
+.ic-sms-link:hover, .ic-sms-link:active, .ic-sms-link:focus {
+	color: #000;
+	/*font-weight: bold;*/
+	text-decoration: underline;
+	background-color: #fff;
+	box-shadow: none;
+}
+
+/* Hide Tabs for RefWorks, EndNote, EasyBib */
+
+prm-action-list > md-tabs > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper md-tab-item:nth-of-type(5),
+prm-action-list > md-tabs > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper md-tab-item:nth-of-type(3),
+prm-action-list > md-tabs > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper md-tab-item:nth-of-type(4) {
+	display: none !important;
+}
+
+/* prm-main-menu {
+	display: none !important;
+}*/
+prm-topbar {
+	/*padding-top: 2px;*/
+	height: 68px;
+}
+prm-main-menu > .top-nav-bar-links > a {
+	/* color: #FFC533 !important;  IC gold */
+	display: none !important; 
+}
+
+#more-links-button {
+	display: none;
+}
+
+#ic-map-div {
+	position:relative;
+	min-height: 460px;
+}
+#ic-map-img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin-left: 1em;
+	/*max-width: 100%;*/
+}
+#ic-map-canvas {
+	border: 1px solid #333;
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin-left: 1em;
+	z-index: 1;
+}
+.ic-loc-message {
+	font-weight: bold;
+	margin-left: 1em;
+}
+
+.ic-debug {
+	background-color: red;
+	color: white;
+}
+
+/* hide unwanted facets */
+.sidebar-section:nth-of-type(2), 
+.sidebar-section:nth-of-type(10), 
+.sidebar-section:nth-of-type(13) {
+	display: none;
+}
+
+.full-view-inner-container {
+	background-color: #fff !important;
+}
+.alert-bar {
+	background-color: #FFD11A; /* gold */
+	border-color: #FFD11A;
+}
+
+h3.light-text {
+	font-size: medium;
+	padding-left: 1em;
+}
+
+prm-icon.giant-icon {
+	display: none;
+}
+
+/* Removes Back to Search button from "My Library Card" area. */
+button#backtosearch {
+	display: none;
+}
+/* Attempt to do some icon switching
+   Didn't work out due to animation */
+/*md-icon[md-svg-icon$="prm_pin"], md-icon[md-svg-icon$="prm_unpin"] {
+	display: none !important;
+}*/
+
+/* Hide "expand my results" checkbox */
+div.sidebar-section:nth-child(3) {
+	display: none;
+}
