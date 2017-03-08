@@ -9,6 +9,10 @@ body {
 	box-shadow: none;
 }
 
+prm-search-result-list .pages-separated-with-gaps .results-title:not(.results-title-favorites) {
+    padding-left: 100px;
+}
+
 md-card.default-card {
 	background-color: #fff;
 	border: 1px solid #ccc;
@@ -54,20 +58,27 @@ prm-brief-result-container {
 	box-shadow: none;
 }
 
+/*#services-index > button > span {
+	font-size: 0.5em;
+}*/
+
 /* Hide Tabs for RefWorks, EndNote, EasyBib */
 
-prm-action-list > md-tabs > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper md-tab-item:nth-of-type(5),
-prm-action-list > md-tabs > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper md-tab-item:nth-of-type(3),
-prm-action-list > md-tabs > md-tabs-wrapper > md-tabs-canvas > md-pagination-wrapper md-tab-item:nth-of-type(4) {
+prm-action-list md-nav-bar ul._md-nav-bar-list li.md-nav-item:nth-of-type(2),
+prm-action-list md-nav-bar ul._md-nav-bar-list li.md-nav-item:nth-of-type(3),
+prm-action-list md-nav-bar ul._md-nav-bar-list li.md-nav-item:nth-of-type(4)
+{
+	display: none;
+}
+prm-action-list md-nav-bar ul._md-nav-bar-list li.md-nav-item {
+	margin: 0 10px;
+}
+prm-main-menu {
 	display: none !important;
 }
-
-/* prm-main-menu {
-	display: none !important;
-}*/
 prm-topbar {
 	/*padding-top: 2px;*/
-	height: 68px;
+	height: 60px;
 }
 prm-main-menu > .top-nav-bar-links > a {
 	/* color: #FFC533 !important;  IC gold */
@@ -80,8 +91,25 @@ prm-main-menu > .top-nav-bar-links > a {
 
 #ic-map-div {
 	position:relative;
-	min-height: 460px;
+	min-height: 300px;
 }
+/* these make sure that the map doesn't get cut off */
+@media (min-width: 800px) {
+	#ic-map-div {
+		min-height: 380px;
+	}
+}
+@media (min-width: 1100px) {
+	#ic-map-div {
+		min-height: 420px;
+	}
+}
+@media (min-width: 1400px) {
+	#ic-map-div {
+		min-height: 560px;
+	}
+}
+
 #ic-map-img {
 	position: absolute;
 	top: 0;
@@ -135,13 +163,42 @@ prm-icon.giant-icon {
 button#backtosearch {
 	display: none;
 }
-/* Attempt to do some icon switching
-   Didn't work out due to animation */
-/*md-icon[md-svg-icon$="prm_pin"], md-icon[md-svg-icon$="prm_unpin"] {
-	display: none !important;
-}*/
 
-/* Hide "expand my results" checkbox */
-div.sidebar-section:nth-child(3) {
+/* Make animated pin icon match the static pin color */
+.pinDummy prm-icon {
+	color: #4DB8FF;
+}
+
+/* Hide most of the default availability line for online resources */
+prm-search-result-availability-line prm-icon[icon-definition="link"], 
+prm-search-result-availability-line prm-icon[icon-definition="link"] + button,
+prm-search-result-availability-line prm-icon[icon-definition="link"] + span
+ {
 	display: none;
+}
+prm-search-result-availability-line prm-search-result-availability-line-after prm-icon[icon-definition="link"]{
+	display: inline;
+}
+prm-search-result-availability-line-after a {
+	color: green;
+}
+prm-search-result-availability-line-after a:hover, prm-search-result-availability-line-after a:focus {
+	color: green;
+	background-color: #fff;
+}
+prm-search-result-availability-line-after prm-icon {
+	color: #bbb;
+}
+prm-search-result-availability-line-after prm-icon[icon-definition="open-in-new"] {
+	color: #666;
+}
+prm-search-result-availability-line-after prm-icon[icon-definition="open-in-new"] md-icon {
+	transform: scale(0.65);
+}
+prm-search-result-availability-line-after prm-icon md-icon {
+	transform: scale(0.7);
+}
+
+prm-facet-group strong {
+	color: #000 !important;
 }

@@ -5,6 +5,8 @@ var staticLocations = {
       "circdesk": { "floor":"2","x":100,"y":91,"width":123,"height":38, "message":"Ask for this item at the Circulation/Reserves desk on the second floor.", "english":"Circulation Desk" },
       "refdesk": { "floor":"2","x":128,"y":236,"width":110,"height":57, "message":"Ask for this item at the Research Help desk on the second floor.", "english":"Reference Desk"},
       "popper": { "floor":"2","x":323,"y":135,"width":22,"height":67, "message":"This item is located on the low shelves near the center of the second floor.", "english":"Popular Periodicals" },
+      "archives": { "floor":"5","x":338,"y":139,"width":188,"height":83, "message":"This item is located in the archives on the fifth floor. Contact Bridget Bower (bbower@ithaca.edu) for access.", "english":"Archives" },
+      "serling": { "floor":"5","x":338,"y":139,"width":188,"height":83, "message":"This item is located in the archives on the fifth floor. Contact Bridget Bower (bbower@ithaca.edu) for access.", "english":"Archives" },
       "reference": { "floor":"2","x":128,"y":236,"width":110,"height":57, "message":"This item is located in the reference stacks behind the Research Help desk on the second floor.", "english":"Reference" },
       "microfilm": { "floor":"4","x":483,"y":59,"width":39,"height":64, "message":"This item is located in the metal cases in the southwest corner of the fourth floor, near the restrooms.", "english":"Microfilm" },
       "musper": { "floor":"3","x":153,"y":228,"width":46,"height":86, "message":"This item is located in the northeast corner of the third floor, near the administrative offices.", "english":"Music Periodicals" },

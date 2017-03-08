@@ -18,9 +18,24 @@ app.component('prmLogoAfter', {
 	template: '<div class="product-logo product-logo-local" layout="row" layout-align="start center" layout-fill id="banner"><a href="https://library.ithaca.edu/"><img class="logo-image" alt="{{::(\'nui.header.LogoAlt\' | translate)}}" ng-src="{{$ctrl.getIconLink()}}"/></a></div>'
 });
 
+// Add the "Get It" icon to the item view
+// app.controller('prmViewOnlineAfterController', [function(){
+//     var vm = this;
+//     vm.getTheSSLink = getTheSSLink;
+//     function getTheSSLink() {
+//         return vm.parentCtrl.item.linkElement.links[0].link;
+//     }
+// }]);
+// app.component('prmViewOnlineAfter', {
+//     bindings: { parentCtrl : '<' },
+//     controller: 'prmViewOnlineAfterController',
+//     template: '<a href="{{$ctrl.getTheSSLink()}}" target="_blank"><img ng-src="custom/01ITHACACOL/img/getit.gif"></a>'
+// });
+
+
 // Map stuff
 app.controller('prmLocationItemsAfterController', [function(){
-	// console.log(this);
+	console.log(this);
 
     if (this.parentCtrl.item.delivery.holding.length > 1) {
         this.multipleHoldings = true;
@@ -52,76 +67,7 @@ app.controller('prmLocationItemsAfterController', [function(){
     this.normalizeLC = normalizeLC;
     this.sortLC = sortLC;
 
-    function normalizeLC(callNumber) {
-        // remove initial whitespace
-        var cn = callNumber.replace(/^\s*/, '');
-        // all alpha to uppercase
-        cn = cn.toUpperCase();
-        var re = /^([A-Z]{1,3})\s*(\d+)\s*\.*(\d*)\s*\.*\s*([A-Z]*)(\d*)\s*([A-Z]*)(\d*)\s*(.*)$/;
-        if (cn.match(re)) {
-            var bits = cn.match(re);
-            var initialLetters = bits[1];
-            var classNumber = bits[2];
-            var decimalNumber = bits[3];
-            var cutter_1_letter = bits[4];
-            var cutter_1_number = bits[5];
-            var cutter_2_letter = bits[6];
-            var cutter_2_number = bits[7];
-            var theTrimmings = bits[8];
-            if (cutter_2_letter && !(cutter_2_number)) {
-                theTrimmings = cutter_2_letter + theTrimmings;
-                cutter_2_letter = '';
-            }
-            if (classNumber) {
-                classNumber = sprintf("%5s", classNumber);
-            }
-            decimalNumber = sprintf("%-12s", decimalNumber);
-            if (cutter_1_number) {
-                cutter_1_number = ' ' + cutter_1_number;
-            }
-            if (cutter_2_letter) {
-                cutter_2_letter = '   ' + cutter_2_letter;
-            }
-            if (cutter_2_number) {
-                cutter_2_number = ' ' + cutter_2_number;
-            }
-            if (theTrimmings) {
-                theTrimmings.replace(/(\.)(\d)/g, '$1 $2');
-                theTrimmings.replace(/(\d)\s*-\s*(\d)/g, '$1-$2');
-                // not sure about the following line
-                theTrimmings.replace(/(\d+)/g, sprintf("%5s", '$1'));
-                theTrimmings = '   ' + theTrimmings;
-            }
-            var normalized = initialLetters + classNumber + decimalNumber + cutter_1_letter + cutter_1_number + cutter_2_letter + cutter_2_number + theTrimmings;
-            return normalized;
-        } else {
-            console.log('We have a problem: ' + callNumber);
-            return;
-        }
-    }
-                
-    function sortLC() {
-        var unsortedList = Array.prototype.slice.call(arguments);
-        var sortedList = [];
-        var normalCallNo;
-        var callNumberArray = {};
-        var origCallNo = "";
-        for (let i = 0; i < unsortedList.length; i++) {
-            origCallNo = unsortedList[i];
-            normalCallNo = normalizeLC(unsortedList[i]);
-            if (normalCallNo) {
-                if (! callNumberArray[normalCallNo]) {
-                    callNumberArray[normalCallNo] = origCallNo;
-                }
-            }
-        }
-        var theKeys = Object.keys(callNumberArray);
-        var sortedKeys = theKeys.sort();
-        for (var j = 0; j < sortedKeys.length; j++) {
-            sortedList.push(callNumberArray[sortedKeys[j]]);
-        }
-        return sortedList;
-    }
+    
 
     // call number
     try {
@@ -281,6 +227,36 @@ app.component('prmLocationItemsAfter', {
 app.controller('prmSearchResultAvailabilityLineAfterController', [function(){
 	// console.log(this);
 
+    // what is it?
+    try {
+        this.category = this.parentCtrl.result.delivery.GetIt1[0].category;
+    } catch(e) {
+        this.category = "";
+    }
+
+    // translate category type to display text
+    if (this.category === "Online Resource") {
+        this.quickUrlText = "Online access";
+    } else if (this.category === "Remote Search Resource") {
+        this.quickUrlText = "Full text available";
+    } else { // this default should help me spot any weird cases
+        this.quickUrlText = "LINK";
+    }
+
+    // the prioritized full-text link
+    try {
+        this.quickUrl = this.parentCtrl.result.delivery.GetIt1[0].links[0].link;
+    } catch(e) {
+        this.quickUrl = "";
+    }
+
+    // is it online?
+    try {
+        this.online = this.parentCtrl.result.delivery.GetIt1[0].links[0].isLinktoOnline;
+    } catch(e) {
+        this.online = false;
+    }
+
     // title
 	try {
 		this.title = this.parentCtrl.result.pnx.addata.btitle[0];
@@ -332,5 +308,5 @@ app.controller('prmSearchResultAvailabilityLineAfterController', [function(){
 app.component('prmSearchResultAvailabilityLineAfter', {
 	bindings: { parentCtrl: '<' },
 	controller: 'prmSearchResultAvailabilityLineAfterController',
-	template: '<div class="ic-links-area" ng-show="$ctrl.showNotOnShelfLink"><a ng-href="https://library.ithaca.edu/services/sms_me_primo.php?title={{$ctrl.title | encode}}&cn={{$ctrl.callNumber | encode}}&loc={{$ctrl.location | encode}}" class="ic-sms-link">Text this Callnumber</a> | <a ng-href="https://library.ithaca.edu/forms/traceform.php?title={{$ctrl.title | encode}}&author={{$ctrl.author | encode}}&cn={{$ctrl.callNumber | encode}}" class="ic-trace-link">Not on shelf?</a></div><div class="ic-links-area" ng-show="$ctrl.showNotifyLink"><a href="https://library.ithaca.edu/forms/notify.php?title={{$ctrl.title | encode}}&bibId={{$ctrl.bibId | encode}}" class="ic-notify-link">Notify Me</a></div>'
+	template: '<div class="ic-access-link-area" ng-show="$ctrl.online"><prm-icon icon-definition="link" icon-type="svg" svg-icon-set="primo-ui"></prm-icon><a href="{{$ctrl.quickUrl}}" target="_blank">{{$ctrl.quickUrlText}}</a>&nbsp;<prm-icon icon-definition="open-in-new" icon-type="svg" svg-icon-set="primo-ui"></prm-icon><prm-icon icon-definition="chevron-right" icon-type="svg" svg-icon-set="primo-ui"></prm-icon></div><div class="ic-links-area" ng-show="$ctrl.showNotOnShelfLink"><a ng-href="https://library.ithaca.edu/services/sms_me_primo.php?title={{$ctrl.title | encode}}&cn={{$ctrl.callNumber | encode}}&loc={{$ctrl.location | encode}}" class="ic-sms-link">Text this callnumber</a>&nbsp;&nbsp;&nbsp;<a ng-href="https://library.ithaca.edu/forms/traceform.php?title={{$ctrl.title | encode}}&author={{$ctrl.author | encode}}&cn={{$ctrl.callNumber | encode}}" class="ic-trace-link">Not on shelf?</a></div><div class="ic-links-area" ng-show="$ctrl.showNotifyLink"><a href="https://library.ithaca.edu/forms/notify.php?title={{$ctrl.title | encode}}&bibId={{$ctrl.bibId | encode}}" class="ic-notify-link">Notify Me</a></div>'
 });
