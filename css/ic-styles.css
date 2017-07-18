@@ -3,6 +3,10 @@ body {
 	font-size: 14px;
 }
 
+body.md-dialog-is-showing  {
+    overflow-x:visible!important;
+}
+
 #banner > a:hover {
 	background-color: #012949;
 	outline: none;
@@ -11,11 +15,6 @@ body {
 
 prm-search-result-list .pages-separated-with-gaps .results-title:not(.results-title-favorites) {
     padding-left: 100px;
-}
-
-md-card.default-card {
-	background-color: #fff;
-	border: 1px solid #ccc;
 }
 
 prm-logo div.product-logo {
@@ -27,7 +26,6 @@ prm-logo div.product-logo-local {
 }
 
 md-list-item {
-	/*background-color: #fff !important;*/
 	border-left: 3px solid #fff !important;
 }
 md-list-item:hover {
@@ -46,48 +44,37 @@ prm-brief-result-container {
 }
 .ic-trace-link, .ic-sms-link, .ic-notify-link {
 	color: #666;
-	/*font-weight: bold;*/
 }
 .ic-notify-link:hover, .ic-notify-link:active, .ic-notify-link:focus,
 .ic-trace-link:hover, .ic-trace-link:active, .ic-trace-link:focus,
 .ic-sms-link:hover, .ic-sms-link:active, .ic-sms-link:focus {
 	color: #000;
-	/*font-weight: bold;*/
 	text-decoration: underline;
 	background-color: #fff;
 	box-shadow: none;
 }
 
-/*#services-index > button > span {
-	font-size: 0.5em;
-}*/
-
 /* Hide Tabs for RefWorks, EndNote, EasyBib */
 
-prm-action-list md-nav-bar ul._md-nav-bar-list li.md-nav-item:nth-of-type(2),
-prm-action-list md-nav-bar ul._md-nav-bar-list li.md-nav-item:nth-of-type(3),
-prm-action-list md-nav-bar ul._md-nav-bar-list li.md-nav-item:nth-of-type(4)
+prm-action-list > md-nav-bar ul._md-nav-bar-list li.md-nav-item:nth-of-type(1),
+prm-action-list > md-nav-bar ul._md-nav-bar-list li.md-nav-item:nth-of-type(3),
+prm-action-list > md-nav-bar ul._md-nav-bar-list li.md-nav-item:nth-of-type(4),
+prm-action-list > md-nav-bar ul._md-nav-bar-list li.md-nav-item:nth-of-type(5)
 {
 	display: none;
 }
+
 prm-action-list md-nav-bar ul._md-nav-bar-list li.md-nav-item {
 	margin: 0 10px;
 }
-prm-main-menu {
-	display: none !important;
-}
+
 prm-topbar {
 	/*padding-top: 2px;*/
 	height: 60px;
 }
-prm-main-menu > .top-nav-bar-links > a {
-	/* color: #FFC533 !important;  IC gold */
-	display: none !important; 
-}
-
-#more-links-button {
-	display: none;
-}
+/*prm-main-menu .top-nav-bar-links > a:nth-of-type(5) { 
+	visibility: hidden;
+}*/
 
 #ic-map-div {
 	position:relative;
@@ -115,7 +102,6 @@ prm-main-menu > .top-nav-bar-links > a {
 	top: 0;
 	left: 0;
 	margin-left: 1em;
-	/*max-width: 100%;*/
 }
 #ic-map-canvas {
 	border: 1px solid #333;
@@ -201,4 +187,67 @@ prm-search-result-availability-line-after prm-icon md-icon {
 
 prm-facet-group strong {
 	color: #000 !important;
+}
+prm-search-bar {
+	background-color: #013158;
+}
+prm-browse-search-bar {
+	background-color: #013158;	
+}
+.available-facets {
+	background-color: #F3F3F3;
+}
+.available-facets button h3 {
+	color: #008dc6;
+}
+
+md-checkbox[aria-label="Expand My Results"] {
+	display: none;
+}
+
+#item-details > div > div {
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 4px;
+}
+.media-delimiter::before {
+	content: ' |';
+}
+
+prm-static[section="homepage"] md-card.default-card {
+	visibility: hidden;
+}
+
+#tags, #getit_link2 {display:none;} 
+button[aria-label="Tags"], button[aria-label="More"] {display:none;} 
+
+/*Correct overlapping link in periodical records*/
+prm-location-items > .tab-content-header {
+	position: relative;
+	padding-bottom: 2em;
+}
+prm-location-items .layout-column .text-link {
+	position: absolute;
+	bottom: -1em;
+	display: block;
+	padding-bottom: 1em;
+}
+
+/* Citation Tab */
+prm-citation prm-copy-clipboard-btn-after {
+	display: none;
+}
+
+/* Permalink Tab */
+/* Hide the detault features to be replaced with bitly info */
+prm-permalink div.form-focus {
+	display: none;
+}
+prm-permalink .form-focus.ic-bitly-outer-wrapper {
+	display: block !important;
+}
+prm-copy-clipboard-btn > button {
+	display: none !important;
+}
+.ic-bitly-inner-wrapper {
+	text-align: center;
 }

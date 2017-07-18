@@ -1,5 +1,6 @@
 var staticLocations = {
       "mcnaughton": { "floor":"2","x":131,"y":156,"width":103,"height":11, "message":"This item is located on the low shelves just inside the main entrance, on the side facing the Circulation/Reserves desk.", "english":"Popular Reading" },
+      "mcnaud": { "floor":"2","x":131,"y":156,"width":103,"height":11, "message":"This item is located on the low shelves just inside the main entrance, on the side facing the Circulation/Reserves desk.", "english":"Popular Reading" },
       "newbooks": { "floor":"2","x":132,"y":166,"width":101,"height":13, "message":"This item is located on the low shelves just inside the main entrance, on the side facing the Research Help desk.", "english":"New Books" },
       "newspaper": { "floor":"2","x":264,"y":131,"width":55,"height":73, "message":"This item is located on the low shelves on either side of the main staircase on the second floor.", "english":"Newspapers" },
       "circdesk": { "floor":"2","x":100,"y":91,"width":123,"height":38, "message":"Ask for this item at the Circulation/Reserves desk on the second floor.", "english":"Circulation Desk" },

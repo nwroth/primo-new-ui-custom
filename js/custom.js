@@ -89,27 +89,67 @@ app.controller('prmLogoAfterController', [function () {
 app.component('prmLogoAfter', {
     bindings: { parentCtrl: '<' },
     controller: 'prmLogoAfterController',
-    template: '<div class="product-logo product-logo-local" layout="row" layout-align="start center" layout-fill id="banner"><a href="https://library.ithaca.edu/"><img class="logo-image" alt="{{::(\'nui.header.LogoAlt\' | translate)}}" ng-src="{{$ctrl.getIconLink()}}"/></a></div>'
+    template: '<div class="product-logo product-logo-local" layout="row" layout-align="start center" layout-fill id="banner"><a href="https://library.ithaca.edu/"><img class="logo-image" alt="Ithaca College Library" ng-src="{{$ctrl.getIconLink()}}"/></a></div>'
 });
 
-// Add the "Get It" icon to the item view
-// app.controller('prmViewOnlineAfterController', [function(){
-//     var vm = this;
-//     vm.getTheSSLink = getTheSSLink;
-//     function getTheSSLink() {
-//         return vm.parentCtrl.item.linkElement.links[0].link;
-//     }
-// }]);
-// app.component('prmViewOnlineAfter', {
-//     bindings: { parentCtrl : '<' },
-//     controller: 'prmViewOnlineAfterController',
-//     template: '<a href="{{$ctrl.getTheSSLink()}}" target="_blank"><img ng-src="custom/01ITHACACOL/img/getit.gif"></a>'
-// });
+// Bitly links
+app.controller('prmCopyClipboardBtnAfterController', [function () {
+    var vm = this;
+    vm.ajax_promise = ajax_promise;
+    vm.get_bitlink = get_bitlink;
 
+    function ajax_promise(requestUrl) {
+        return new Promise(function (resolve, reject) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', requestUrl);
+            xhr.send();
+            xhr.onload = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        //console.log("xhr done successfully");
+                        var resp = xhr.responseText;
+                        var respJson = JSON.parse(resp);
+                        resolve(respJson);
+                    } else {
+                        reject(xhr.status);
+                        //console.log("xhr failed");
+                    }
+                } else {
+                        //console.log("xhr processing going on");
+                    }
+            };
+        });
+    }
+
+    function get_bitlink() {
+
+        var long_url = encodeURIComponent(vm.parentCtrl.text);
+        if (long_url !== 'undefined') {
+
+            var requestUrl = "https://api-ssl.bitly.com/v3/shorten?callback=?&format=json&access_token=0fd99ee37b132dd219ef0510cf7c04598f085daf&login=iclibrary&longUrl=" + long_url;
+
+            ajax_promise(requestUrl).then(function (result) {
+                vm.bitlink = result.data.url;
+                //console.log(vm.bitlink);
+                var theLink = document.getElementById("ic-bitly");
+                theLink.innerHTML = vm.bitlink;
+                theLink.href = vm.bitlink;
+            }).catch(function (e) {
+                console.log("Problem: " + e);
+            });
+        }
+    }
+}]);
+
+app.component('prmCopyClipboardBtnAfter', {
+    bindings: { parentCtrl: '<' },
+    controller: 'prmCopyClipboardBtnAfterController',
+    template: '<div class="form-focus layout-padding layout-row ic-bitly-outer-wrapper" layout="row" layout-padding=""><div layout-margin layout-fill class="word-break-all layout-fill ic-bitly-inner-wrapper"><span layout-fill="layout-fill" class="layout-fill"><a href="#" id="ic-bitly">{{$ctrl.get_bitlink()}}</a></span></div></div><br /><button ng-click="$ctrl.saveOffset()" text="$ctrl.bitlink" clipboard="" ng-hide="$ctrl.copySuccessful" type="button" class="button-confirm button-with-icon md-button md-primoExplore-theme md-ink-ripple" on-copied="$ctrl.clipboardSuccess() | translate" on-error="$ctrl.clipboardFailure(err) | translate" id="copy-citation-button" aria-label="nui.permalink.button" aria-hidden="false" style=""><prm-icon icon-type="svg" svg-icon-set="primo-ui" icon-definition="clipboard"></prm-icon><prm-icon-after parent-ctrl="$ctrl"></prm-icon-after></prm-icon><span translate="nui.permalink.button">Copy the Permalink to Clipboard</span><div class="md-ripple-container"></div></div></button>'
+});
 
 // Map stuff
-app.controller('prmLocationItemsAfterController', [function () {
-    console.log(this);
+app.controller('prmOpacAfterController', [function () {
+    // console.log(this);
 
     if (this.parentCtrl.item.delivery.holding.length > 1) {
         this.multipleHoldings = true;
@@ -170,7 +210,6 @@ app.controller('prmLocationItemsAfterController', [function () {
     if (this.availability === "available" && typeof this.location !== "undefined") {
 
         this.containerWidth = document.getElementById('full-view-container').offsetWidth;
-        // console.log(this.containerWidth);
 
         this.mapAreaRatio = 1; // amount of containerWidth map will occupy
         if (this.containerWidth > 600) {
@@ -217,15 +256,21 @@ app.controller('prmLocationItemsAfterController', [function () {
                     this.lookupArray = null;
                     break;
             }
+            // console.log(this.lookupArray);
 
             for (var _i2 = 0; _i2 < this.lookupArray.length; _i2++) {
+                // console.log(this.lookupArray[i]);
                 var start = this.lookupArray[_i2].start;
+                // console.log(this.lookupArray[i].start);
                 var end = this.lookupArray[_i2].end;
                 var test = sortLC(start, end, this.callNumber);
-                if (test[1] === this.callNumber) {
+                // console.log(test);
+                if (test[1] === this.callNumber || test[0] === this.callNumber && test.length === 2) {
                     this.coordinates = this.lookupArray[_i2];
                 }
             }
+
+            // console.log(this.coordinates);
 
             this.floor = this.coordinates.id.split('.')[0];
             this.stack = this.coordinates.id.split('.')[1];
@@ -249,9 +294,11 @@ app.controller('prmLocationItemsAfterController', [function () {
 
             // what locations are there that aren't the "bestlocation"?
             for (var i = 0; i < this.holdingsLocations.length; i++) {
-                if (this.holdingsLocations[i] !== this.location) {
 
-                    this.locMessage += staticLocations[this.holdingsLocations[i]].english || this.holdingsLocations[i];
+                if (this.holdingsLocations[i] !== this.location) {
+                    var hl = this.holdingsLocations[i];
+                    // console.log(hl);
+                    this.locMessage += staticLocations[hl.english] || hl;
                     if (i === this.holdingsLocations.length - 1) {
                         this.locMessage += ".";
                     } else {
@@ -283,14 +330,13 @@ app.controller('prmLocationItemsAfterController', [function () {
 
     drawingContext.fillRect(this.x, this.y, this.width, this.height);
 }]);
-app.component('prmLocationItemsAfter', {
+app.component('prmOpacAfter', {
     bindings: { parentCtrl: '<' },
-    controller: 'prmLocationItemsAfterController',
+    controller: 'prmOpacAfterController',
     template: '<code ng-show="$ctrl.debug" class="ic-debug">&nbsp;{{$ctrl.location}} | {{$ctrl.callNumber}} | {{$ctrl.availability}}&nbsp;</code><br /><br /><p ng-show="$ctrl.showLocMessage" class="ic-loc-message">{{$ctrl.locMessage}}</p><div ng-show="$ctrl.showMap" id="ic-map-div"><img id="ic-map-img" ng-src="custom/01ITHACACOL/img/floor_{{$ctrl.floor}}.png"><canvas id="ic-map-canvas"></canvas></div>'
 });
 
-// Links for trace, sms, notification (based on code 
-// from Jeff Peterson, U of Minnesota Libraries)
+// Links for trace, sms, notification 
 app.controller('prmSearchResultAvailabilityLineAfterController', [function () {
     // console.log(this);
 
@@ -380,6 +426,7 @@ app.component('prmSearchResultAvailabilityLineAfter', {
 
 var staticLocations = {
     "mcnaughton": { "floor": "2", "x": 131, "y": 156, "width": 103, "height": 11, "message": "This item is located on the low shelves just inside the main entrance, on the side facing the Circulation/Reserves desk.", "english": "Popular Reading" },
+    "mcnaud": { "floor": "2", "x": 131, "y": 156, "width": 103, "height": 11, "message": "This item is located on the low shelves just inside the main entrance, on the side facing the Circulation/Reserves desk.", "english": "Popular Reading" },
     "newbooks": { "floor": "2", "x": 132, "y": 166, "width": 101, "height": 13, "message": "This item is located on the low shelves just inside the main entrance, on the side facing the Research Help desk.", "english": "New Books" },
     "newspaper": { "floor": "2", "x": 264, "y": 131, "width": 55, "height": 73, "message": "This item is located on the low shelves on either side of the main staircase on the second floor.", "english": "Newspapers" },
     "circdesk": { "floor": "2", "x": 100, "y": 91, "width": 123, "height": 38, "message": "Ask for this item at the Circulation/Reserves desk on the second floor.", "english": "Circulation Desk" },
